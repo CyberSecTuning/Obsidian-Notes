@@ -1,3 +1,4 @@
+[[HTB Modules]]
 Table of Contents
 [[Types of Web Fuzzers]]
 [[Fuzzing]]
