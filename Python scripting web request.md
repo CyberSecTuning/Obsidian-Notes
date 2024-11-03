@@ -1,4 +1,3 @@
-
 ###### **Basic GET request using python**
 ```python
 import requests
