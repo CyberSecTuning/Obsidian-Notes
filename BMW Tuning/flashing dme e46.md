@@ -11,7 +11,7 @@ Items needed:
 - Laptop using Win OS
 - Ms4x Flasher installed
 - JMGarage installed
-- Battery Charger (optioinal)
+- Battery Charger (optional)
 - Ground wire for boot mode pin. (Random copper wire)
 
 Once the vehicle is in ignition 2 position and OBD2 is plugged into the laptop we are ready to start. 
@@ -21,26 +21,41 @@ Once the vehicle is in ignition 2 position and OBD2 is plugged into the laptop w
 - Connect OBD cable to car and computer and turn car to ignition position 2. If bench setup, turn on power supply.
 - Open MS4x flasher
 	- In previous guides, Ms4x flasher has been used to do full reads. In recent windows updates when using Ms4x flasher for full reads, it will occasionally respond with "Error "Could not read the data from the control unit" 
-	- This issue could be caused by operating system configuration. Users have reported windows 11 may cause communication issues with during full reads. 
-	- For this example, using Ms4x flasher on windows 11, would not allow a full read. 
+	- This issue could be caused by operating system configuration. Users have reported windows 11 may cause communication issues with during full reads or the current ECU being read is. 
+	- Another possibility is that some ECU's are read locked for DS2 reading, which is the protocol used by MS4x Flasher to communicate with the ECU.
+	- For this example, using Ms4x flasher on windows 11 , initially it would not allow a full read. I would receive the error `could not read data from the control unit` 
+	![[Pasted image 20241105062755.png]]
+
+	- During this stage my initial thought was the DME was DS2 locked, which can be added to the ECU's read block to deny any reads on the ECU.
+	- Through many troubleshooting, the issue was found to be the K-DCAN cable being set to the wrong pins due to the usage of the cable with multiple BMW models. 
 
 - Make sure MS4x Flasher identifies ECU as MS43 by clicking "Identify"
     
-- Hit “full read” or "Partial Read" for tuning and wait for it read.
+- Hit “full read” or "Partial Read" for tuning using correct firmware and wait for it read.
     
 - If Ms4x is successful, Hit “save binary”
 
 	- Save this binary in a safe place as a backup.
+	![[Pasted image 20241105061948.png]]
 
-- For maximum tuning capabilities it is recommended to update the vehicles firmware to the most recent version which is: MS430069, for the BMW e46 M54B30. 
+- For maximum tuning capabilities it is recommended to update the vehicles firmware to the most recent version which is: MS430069, for the BMW e46 M54B30.  Note the current firmware is version 0056.
 	- This firmware update is necessary to unlock new features and bug fixes. Also improves stability and performance along with compatibility with Tuning tools. 
 	- It is important you select the correct .bin file corresponding to your vehicles engine specifications. 
-![[Pasted image 20241105011802.png]]
+	- When selecting definition files for tuning software such as tuner pro, you will only see the 0069 files being presented. 
+	![[Pasted image 20241105065249.png]]
+	![[Pasted image 20241105011802.png]]
+Download links for e46 firmware update.
+https://www.ms4x.net/index.php?title=Firmware_Files
 https://www.ms4x.net/index.php?title=File:Siemens_MS43_MS430069_E46_M54B30_US.bin
     
+
 - Once new firmware is downloaded, in Ms4x flasher go to the next tab down in the flasher and hit “load binary”
 
-- Select BIN file for the 069 firmware that you downloaded from MS4x.net and hit open
+	- For this example i will not load the binary into the vehicle at this time for a firmware update. 
+	- For best practices i will use JMgarage to acquire a true full flash through boot-mode, which extracts all ECU information. including VIN and ISN and save a full backup of the ECU's data.
+	- Note that upgrading and downgrading software via boot-mode is not recommended due to overwriting the ISN which will desync the EWS from the ECU, EWS can be resynced using INPA or Ms4x flasher. This is being done to secure a complete 1:1 clone of your ECU data incase any errors occur in the future, your ECU can be cloned to its original state. 
+	- Another key note is to avoid flashing full readouts made with OBD programs in boot mode such as MS4x flasher, this is because the program routines in the ECU blocks where ECU unique keys are contained, flashing in boot mode will permanently delete these keys and can only be restored if you have a full boot-mode backup.
+	- Once you are ready to update your firmware, Select BIN file for the 069 firmware that you downloaded from MS4x.net and hit open
 	-  Hit full write then wait for it write. It may be recommended to do a full flash using jmgarage in boot mode if you are experiencing communication issues. 
  
 - Once file has been written go back up to the first tab in the flasher and do a full read
