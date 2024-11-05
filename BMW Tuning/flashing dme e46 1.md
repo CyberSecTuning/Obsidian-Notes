@@ -1,7 +1,11 @@
-Frankie Deleon 
+Frankie Deleon
 11/05/2024
 IS-4543-ON1
-<p style="text-align:center;">Milestone 3: Acquiring ECU data</p>
+
+**Idea #2**: Recode BMW car data to enable/disable different features. It can also expand further to create an environment for engine tuning.
+
+**Milestone #3:** Extract and Modify ECU data using Ms4x Flasher.
+<p style="text-align:center;"><strong>Milestone 3: Acquiring ECU data</strong></p>
 ###### Summary of Activities:
 
 Tuning a BMW ECU is an exciting and daunting task that requires the right tools and knowledge to follow the correct steps to safely access and modify the engine’s control data. In this guide, we’ll explore how to use two reliable tools: MS4X Flasher for full and partial reads, which is ideal for partial reads through the OBD port, enabling quick access to specific calibration data. With MS4X, you can perform necessary tweaks without engaging in full ECU access, making it convenient for simpler updates and re-calibrations. This method allows for program adjustments while preserving the bootloader section, ensuring that the ECU’s core structure remains intact. For more advanced tasks, the JM Garage software provides complete ECU access by enabling “boot mode.” This method requires grounding pin 104 on the ECU’s C167 processor, bypassing flash protections to enable full reads and writes. Boot mode is essential when you need unrestricted access, such as for cloning, deep parameter adjustments, or VIN and security code updates. This approach ensures you have a comprehensive backup of the ECU’s entire 512KB flash memory, covering all program, calibration, and boot-loader data. Whether you’re looking to fine-tune specific parameters or fully customize your BMW E46’s ECU, these tools offer a versatile pathway to unlock its potential safely. This guide will help you understand the steps and precautions needed to make precise modifications to your ECU setup.
@@ -30,6 +34,7 @@ Once the vehicle is in ignition 2 position and OBD2 is plugged into the laptop w
 	- This issue could be caused by operating system configuration. Users have reported windows 11 may cause communication issues with during full reads or the current ECU being read is. 
 	- Another possibility is that some ECU's are read locked for DS2 reading, which is the protocol used by MS4x Flasher to communicate with the ECU.
 	- For this example, using Ms4x flasher on windows 11 , initially it would not allow a full read. I would receive the error `could not read data from the control unit` 
+	
 	![[Pasted image 20241105062755.png]]
 
 	- During this stage my initial thought was the DME was DS2 locked, which can be added to the ECU's read block to deny any reads on the ECU.
@@ -116,10 +121,10 @@ To begin the process of entering boot mode:
 - Start JMGarage boot mode programming software.
 
 - Short pin 104 on the C167 processor to ground with a piece of wire or something similar on the pin showed in the screenshot below.
-![[Pasted image 20241105004119.png]]
+		![[Pasted image 20241105004119.png]]
 
 - Power up the ECU and keep shorting pin 104 for approximately 10 seconds. If you are working in the car you can power up the ECU by turning the ignition key to position 2 and then connecting the X60001 connector which powers the Vcc/+12V, Ground, and CAN-Bus low/ TCU K-line functions as shown in the screenshots below. 
-
+ 
 ![[Pasted image 20241105021502.png]]
 ![[Pasted image 20241105021614.png]]
 
