@@ -32,6 +32,33 @@ These processes can also be linked to IP addresses associated with their PID's.
 
 4.) Can you find user account names? Passwords? If not why not?  
 
+Our hive-scan revealed hex locations we can use to scan for users since hive-dump alone provided no results. 
+
+
+![[Pasted image 20241107072138.png]]
+
+The hex did not reveal much, but with a google search on how to identify registry hives for user accounts, we can begin to search for `SAM\Domains\Account\Users`
+
+Using Volatility's print-key feature we revealed the sub-keys under the registry. 
+The `Names` key, stands out. 
+
+![[Pasted image 20241107072932.png]]
+![[Pasted image 20241107073311.png]]
+Traversing to the /Names registry, we can now see the names of all the users.
+
+Using filescan, we can further investigate the location offset of the Sam registery
+
+![[Pasted image 20241107073908.png]]
+
+![[Pasted image 20241107075314.png]]
+![[Pasted image 20241107075607.png]]
+
+
+
+We can dump these files in our specified directory using the dumpfiles flag and specifying the SAM offset
+ 
+![[Pasted image 20241107074412.png]]
+
 
 5.) View the Dynamically Linked Libraries. Does this look like your average box?  
 
@@ -101,3 +128,7 @@ Before the command line logs end the command `C:\WINDOWS\System32\rundll32.exe f
 
 
 
+refrences
+https://github.com/dinoex/iroffer-dinoex
+https://github.com/claudiouzelac/rootkit.com/blob/master/hf/hxdef100r/readmeen.txt
+https://www.trendmicro.com/vinfo/us/threat-encyclopedia/malware/poisonivy

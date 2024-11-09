@@ -8,9 +8,8 @@ Note: assembly files usually use the `.s` or the `.asm` extensions. We will be u
 
 We don't have to keep using tabs to separate parts of an assembly file, as this was only for demonstration purposes. We can write the following code into our `helloWorld.s` file:
 
-Code: nasm
 
-```nasm
+```assembly
 global _start
 
 section .data

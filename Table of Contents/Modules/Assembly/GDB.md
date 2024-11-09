@@ -11,6 +11,7 @@ xeloki@htb[/htb]$ gdb -q ./helloWorld
 ...SNIP...
 gef➤
 ```
+-q is quiet mode, to hide gdb introduction
 
 As we can see from `gef➤`, GEF is loaded when GDB is run. If you ever run into any issues with `GEF`, you can consult with the [GEF Documentation](https://hugsy.github.io/gef/), and you will likely find a solution.
 

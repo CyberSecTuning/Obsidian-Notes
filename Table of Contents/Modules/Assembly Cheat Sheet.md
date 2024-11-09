@@ -14,7 +14,8 @@ Fundamentals
 [[Disassembling]]
 [[GDB]]
 [[GDB Debugging]]
-
+[[Data Movement]]
+[[Arithmetic Instructions -Assembly]]
 
 
 ## Compilation Stages
