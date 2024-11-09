@@ -29,7 +29,7 @@ These processes can also be linked to IP addresses associated with their PID's.
 1728 is iroffer.exe
 1480 is bircd.exe
 480 is poisonivy.exe
-
+D
 4.) Can you find user account names? Passwords? If not why not?  
 
 Our hive-scan revealed hex locations we can use to scan for users since hive-dump alone provided no results. 
@@ -70,6 +70,18 @@ Wizard_RunDLL
 ```
 
 6.)Can you associate any Processes (PIDs), DLLs, and executables?  
+
+![[Pasted image 20241109133446.png]]
+
+![[Pasted image 20241109133612.png]]
+
+![[Pasted image 20241109133636.png]]
+![[Pasted image 20241109133728.png]]
+
+
+
+![[Pasted image 20241109133549.png]]
+
 
 7.) View the files associated with the processes.  
 ![[Pasted image 20241106195612.png]]
@@ -113,7 +125,7 @@ Poisonivy.exe can then be seen running from the /System32 directory. This was fo
 Shortly after, the intruder executed another reverse shell using netcat with:
 `C:\inetpub\ftproot\nc.exe -L -p 6666 -e cmd.exe` 
 
-It seems this reverse shell was used to execute the commands for winvnc4.exe likely to gain remote access and the lock.bat file, which was found in the previous lab to lock down the system when needed. 
+It seems this reverse shell was used to execute the commands for winvnc4.exe likely to gain remote access and the lock.bat file, which was found in the previous lab to lock down the system when needed., while  
 Before the command line logs end the command `C:\WINDOWS\System32\rundll32.exe fldrclnr.dll,Wizard_RunDLL` was ran which can be the DLL's used to run malicious code from DLL's or hide evidence. 
 
 
