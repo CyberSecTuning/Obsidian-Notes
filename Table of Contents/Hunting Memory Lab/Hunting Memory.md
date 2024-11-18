@@ -1,12 +1,21 @@
+Frankie Deleon
+IS-3523-ON1
+10/10/2024
+Malware Analysis
+
 1.)  What operating system is the computer using? What version?  
 ![[Pasted image 20241106190441.png]]
 	WinXPSP2x86
 
 2.) How much RAM is included in the analysis?  
 
+Using the command `ls -lh KobayashiMaru.vmem` , we can see that the file is 512M.
 
+![[Pasted image 20241109224241.png]]
 
 3.) View the running processes. Does this look like your average box?  
+ 
+ 
  ![[Pasted image 20241106191446.png]]
 
 While the System seems to start as normal, there are many processes that do not belong on an average box. 
@@ -29,7 +38,8 @@ These processes can also be linked to IP addresses associated with their PID's.
 1728 is iroffer.exe
 1480 is bircd.exe
 480 is poisonivy.exe
-D
+
+
 4.) Can you find user account names? Passwords? If not why not?  
 
 Our hive-scan revealed hex locations we can use to scan for users since hive-dump alone provided no results. 
@@ -44,20 +54,28 @@ The `Names` key, stands out.
 
 ![[Pasted image 20241107072932.png]]
 ![[Pasted image 20241107073311.png]]
-Traversing to the /Names registry, we can now see the names of all the users.
 
-Using filescan, we can further investigate the location offset of the Sam registery
+Traversing to the /Names registry, we can now see the names of all the users.
+- Administrator
+- Danial Faraday
+- Guest
+- HelpAssistant
+- IUSR_FARADAY
+- IWAM_FARADAY
+- SUPPORT_388945a0
+
+Using filescan, we can further investigate the location offset of the Sam registry
 
 ![[Pasted image 20241107073908.png]]
 
 ![[Pasted image 20241107075314.png]]
 ![[Pasted image 20241107075607.png]]
 
-
-
 We can dump these files in our specified directory using the dumpfiles flag and specifying the SAM offset
  
 ![[Pasted image 20241107074412.png]]
+
+
 
 
 5.) View the Dynamically Linked Libraries. Does this look like your average box?  
@@ -71,6 +89,23 @@ Wizard_RunDLL
 
 6.)Can you associate any Processes (PIDs), DLLs, and executables?  
 
+Using the command `volatility -f KobayashiMaru.vmem --profile=WinXPSP2x86 dlllist` we can see all of the DLLs associated with the executables during this session.
+
+hxdef100 is seen here associated with many of the same DLLs that will be seen below such as:
+
+```
+ntdll.dll- 
+
+kernel32.dll
+advapi32.dll
+RPCT4.dll
+oleauth32.dll
+OLE32.dll
+ws2_32.dll
+WS2HELP.dll
+```
+
+
 ![[Pasted image 20241109133446.png]]
 
 ![[Pasted image 20241109133612.png]]
@@ -82,11 +117,20 @@ Wizard_RunDLL
 
 ![[Pasted image 20241109133549.png]]
 
+we can associate these files to processes using pstree
+
+![[Pasted image 20241106191605.png]]
+
+
 
 7.) View the files associated with the processes.  
+
+Using the command `volatility -f KobayashiMaru.vmem --profile=WinXPSP2x86 cmdline` we can see all of the commands and file locations for the processes run during this session.  
+
 ![[Pasted image 20241106195612.png]]
 ![[Pasted image 20241106195642.png]]
 ![[Pasted image 20241106195659.png]]
+
 
 a. Do any files or file paths look abnormal? Reference the file path if available.  
 
@@ -121,16 +165,13 @@ It is similar to a FTP server or WEB server, but users can download
 files using the DCC protocol of IRC instead of a web browser, giving the intruder access to transfer files into the machine. 
 
 Poisonivy.exe can then be seen running from the /System32 directory. This was found in the previous lab and can be associated with a known backdoor known as a Remote Administration Tool (RAT).
+msmsgs.exe was ran and using soffice.exe to potentially sc
 
 Shortly after, the intruder executed another reverse shell using netcat with:
 `C:\inetpub\ftproot\nc.exe -L -p 6666 -e cmd.exe` 
 
 It seems this reverse shell was used to execute the commands for winvnc4.exe likely to gain remote access and the lock.bat file, which was found in the previous lab to lock down the system when needed., while  
 Before the command line logs end the command `C:\WINDOWS\System32\rundll32.exe fldrclnr.dll,Wizard_RunDLL` was ran which can be the DLL's used to run malicious code from DLL's or hide evidence. 
-
-
-
-
 
 
 
